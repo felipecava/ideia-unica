@@ -32,4 +32,4 @@ function Contador() {
     )
 }
 
-export default Home
+export default Home;
