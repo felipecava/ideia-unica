@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 export async function getStaticPaths() {
     const apiPokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1126`);
     const jsonPokemon = await apiPokemon.json();
@@ -41,20 +43,35 @@ export async function getStaticProps(context) {
 }
 
 function Produtos(props) {
+    const Capitalized = str => {
+        if (typeof str !== 'string') {
+            return '';
+        }
+        return str.charAt(0).toUpperCase() + str.substr(1);
+    }
+    const nome = Capitalized(props.nome); 
+    const titleName = (nome)? '| '+nome : '' ;
+
     return (
-        <div style={{display: 'flex', border: '5px solid #000', flexDirection: 'column', width: '200px', padding: '10px 0'}}>
-            <div style={{display: 'flex', 'border-bottom': '5px solid #000', width: '100%'}}>
-                <img src={props.photo} alt={props.nome} />
-                <img src={props.shiny} alt={props.nome} />
+        <div>
+            <Head>
+                <title>Pokemon {titleName}</title>
+            </Head>
+            <div style={{display: 'flex', border: '5px solid #000', flexDirection: 'column', width: '200px', padding: '10px 0'}}>
+                <div style={{display: 'flex', 'border-bottom': '5px solid #000', width: '100%'}}>
+                    <img src={props.photo} alt={nome} />
+                    <img src={props.shiny} alt={nome} />
+                </div>
+                <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Tipo:</b> {Capitalized(props.tipo1)} {Capitalized(props.tipo2)}</div>
+                <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Pokemon:</b> <span>{nome}</span></div>
+                <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Numero:</b> {props.numero}</div>
+                <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Altura:</b> {props.altura}</div>
+                <div style={{padding: '10px 10px 0'}}><b>Peso:</b> {props.peso}</div>
             </div>
-            <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Tipo:</b> {props.tipo1} {props.tipo2}</div>
-            <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Pokemon:</b> <span>{props.nome}</span></div>
-            <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Numero:</b> {props.numero}</div>
-            <div style={{'border-bottom': '5px solid #000', padding: '10px'}}><b>Altura:</b> {props.altura}</div>
-            <div style={{padding: '10px 10px 0'}}><b>Peso:</b> {props.peso}</div>
         </div>
     )
 }
+
 
 export default Produtos;
 
